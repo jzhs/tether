@@ -16,7 +16,9 @@ For example, in Python you write things like:
 and you get the hex value stored in that byte.
 
 >>> tether.Store("00800007", "17")
+
 >>> tether.Load("00080007")
+
 17
 
 Using these you may be able to blink leds. Using a loop you can likely
