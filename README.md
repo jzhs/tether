@@ -11,13 +11,13 @@ On the host you use a scripting language (Python, Lisp, Forth, Perl,
 etc) to send these commands to the target.
 
 For example, in Python you write things like:
->>> tether.Load("00080007")
-91
+> >> tether.Load("00080007")
+> 91
 and you get the hex value stored in that byte.
 
->>> tether.Store("00800007", "17")
+> >> tether.Store("00800007", "17")
 
->>> tether.Load("00080007")
+> >> tether.Load("00080007")
 
 17
 
