@@ -1,0 +1,22 @@
+The tether only knows about absolute addresses.
+
+So maybe add a fixed buffer where info can be stored. 
+
+Or "virtual registers".
+
+Then make subrs like this
+ 
+get_midr:
+   msr x0, MIDR_EL1
+   ldr x1, =buffer
+   str x0, [x1]
+   ret
+
+
+* 4 byte read/write required for some mmio?
+
+* 2 byte?
+
+* Host should occasionally check for stray input bytes
+
+

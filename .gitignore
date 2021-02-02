@@ -1,1 +1,7 @@
 *.*~
+*.bin
+*.dmp
+*.elf
+*.lis
+*.map
+*.out
