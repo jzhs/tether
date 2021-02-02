@@ -1,31 +1,59 @@
 #lang racket
+(provide Fetch Store Call open-serial serial-ports rx-byte tx-byte flush close)
 
-(provide serial-open serial-send-byte serial-recv-byte serial-flush serial-close (struct-out io-port))
-
-#|
-    Implement connection to device
-|#
-
-(struct io-port (in out name))
+(require libserialport)
 
 (define current-serial-port (make-parameter #f))
 
+(struct io-port (in out))
 
-(define (serial-open dev baud)
-  (let ([stty-cmd (string-append "stty --file=" dev " " baud " raw -echo cs8 cread clocal")])
-    (system stty-cmd)
-    (let-values ([(to from) (open-input-output-file dev #:mode 'binary #:exists 'append)])
-      (current-serial-port (io-port to from dev) ) ) ) )
 
-(define (serial-send-byte b)
-  (write-byte b (io-port-out (current-serial-port))))
+(define (open-serial dev baud)
+  (let-values ([(in out) (open-serial-port dev #:baudrate baud)])
+    (current-serial-port (io-port in out))))
 
-(define (serial-recv-byte)
-  (read-byte (io-port-in (current-serial-port))))
-  
-(define (serial-close)
+(define (close)
   (close-input-port (io-port-in (current-serial-port)))
   (close-output-port (io-port-out (current-serial-port))))
 
-(define (serial-flush)
+(define (flush)
   (flush-output (io-port-out (current-serial-port))))
+
+(define (tx-byte b)
+  (write-byte b (io-port-out (current-serial-port))))
+
+(define (rx-byte)
+  (read-byte (io-port-in (current-serial-port))))
+
+(define (to-bytes n #:byte-order end)
+  
+  (define (to-bytes/acc n cnt acc)
+    (if (= cnt 0)
+        (if (eq? end 'big)
+            acc
+            (reverse acc))
+        (to-bytes/acc (quotient n 256) (sub1 cnt) (cons (remainder n 256) acc))) )
+  
+  (to-bytes/acc n 4 '()))
+
+(define (Fetch adr)
+  (tx-byte #x01)
+  (for ([b (to-bytes adr #:byte-order 'big)])
+    (tx-byte b))
+  (flush)
+  (rx-byte) )
+
+
+(define (Store adr val)
+  (tx-byte #x02)
+  (for ([b (to-bytes adr #:byte-order 'big)])
+    (tx-byte b))
+  (tx-byte val)
+  (flush) )
+
+(define (Call adr)
+  (tx-byte #x03)
+  (for ([b (to-bytes adr #:byte-order 'big)])
+    (tx-byte b))
+  (flush) )
+
