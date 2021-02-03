@@ -36,7 +36,7 @@ loop:
 
 load:	str lr, [sp, #-16]!
 	bl rxword      // read load address
-	ldrb w0, [x0]  // read data at that addr
+	ldrb w0, [x0]  // read byte at that addr
 	bl mu_tx       // transmit
 	ldr lr, [sp], #16
 	ret
