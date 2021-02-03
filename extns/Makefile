@@ -10,8 +10,8 @@ OBJCOPY = $(PREFIX)objcopy
 OBJDUMP = $(PREFIX)objdump
 
 
-sources = *.S
-objects = curel.o cpuid.o
+#sources = *.S
+#objects = 
 
 %.o: %.S
 	$(AS) -a -o $@ $< > $*.lis
@@ -21,10 +21,11 @@ objects = curel.o cpuid.o
 	$(LD) --print-map -T link.ld -o $(subst .bin,.elf,$@) $^  > $*.map
 	$(OBJCOPY) -O binary $(subst .bin,.elf,$@) $@
 	$(OBJDUMP) -D $(subst .bin,.elf,$@) > $*.dmp
+	$(OBJDUMP) --syms $(subst .bin,.elf,$@) | grep ' g ' |  awk '{ print "(" $$5, "#x" $$1 ")" }' > $*.sym
 
 
 # Default target. First cleanup from last make, the build program, then copy for tftp transfer
-all: clean curel.bin cpuid.bin
+all: clean stuff.bin
 
 
 # The >/dev/null 2>/dev/null || true prevents error messages if files don't exist
