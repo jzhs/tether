@@ -1,5 +1,8 @@
 #lang racket
-(provide Fetch Store Call open-serial serial-ports rx-byte tx-byte flush close)
+(provide Fetch Store Call
+         open-serial serial-ports
+         rx-byte tx-byte flush close (struct-out io-port)
+         current-serial-port)
 
 (require libserialport)
 
@@ -55,5 +58,6 @@
   (tx-byte #x03)
   (for ([b (to-bytes adr #:byte-order 'big)])
     (tx-byte b))
-  (flush) )
+  (flush)
+  (+ (* (rx-byte) (expt 256 3)) (* (rx-byte) (expt 256 2)) (* (rx-byte) (expt 256 1)) (rx-byte)))
 
