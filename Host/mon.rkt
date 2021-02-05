@@ -46,10 +46,14 @@
     (define syms (map (λ (x) (list (car x) (+ addr (cadr x)))) s*))))
 
 
+(define (call/sym id)
+  (Call (cadr (assoc id syms))))
+
+(define (exception-level)
+  (call/sym 'elev))
+
 
 (open-serial "/dev/ttyUSB1" 115200)
 (load-lib "../extns/stuff" #x90000 syms)
 
-(define (call/sym id)
-  (Call (cadr (assoc id syms))))
 
