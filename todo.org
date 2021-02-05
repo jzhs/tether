@@ -1,4 +1,15 @@
-The tether only knows about absolute addresses.
+
+
+* Host should occasionally check for stray input bytes
+When out of sync may be able to restore sanity
+
+* Check for frame/overrun error in mini-uart?
+
+* Clean up and document build mechanism
+- the .sym file
+- 
+
+* The tether only knows about absolute addresses.
 
 So maybe add a fixed buffer where info can be stored. 
 
@@ -16,7 +27,4 @@ get_midr:
 * 4 byte read/write required for some mmio?
 
 * 2 byte?
-
-* Host should occasionally check for stray input bytes
-
 
