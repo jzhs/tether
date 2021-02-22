@@ -6,12 +6,11 @@ In early stages it makes sense to place the burden for editing and
 compiling on the host. Having prepared an object file we can send to
 the target for execution. Then we can send results back to the host.
 
-
 In other words, the host has a full operating system. You can
 backspace, cut, copy, paste into your terminal window. Once you have
 the line the way you want you press enter and the line goes to the
 target for processing. The other approach is that when you type a
-character in the window it does to the target. Any backspaces, cursor
+character in the window it goes to the target. Any backspaces, cursor
 movements, etc must be processed by the target. This is okay and you
 may want to do this, but lets start with the host doing the line
 editing.
