@@ -16,18 +16,21 @@ OBJDUMP = $(PREFIX)objdump
 %.o: %.S
 	$(AS) -a -o $@ $< > $*.lis
 
-
 %.bin: %.o
 	$(LD) --print-map -T link.ld --just-symbols ../Target/RPi3Bplus/kernel8.elf -o $(subst .bin,.elf,$@) $^  > $*.map
 	$(OBJCOPY) -O binary $(subst .bin,.elf,$@) $@
-	$(OBJDUMP) -D $(subst .bin,.elf,$@) > $*.dmp
-	$(OBJDUMP) --syms $(subst .bin,.elf,$@) | grep ' g ' | grep 'text' |  awk '{ print "(" $$5, "#x" $$1 ")" }' > $*.sym
+
+%.dmp: %.elf
+	$(OBJDUMP) -D $(subst .dmp,.elf,$@) > $@
+
+%.sym: %.dmp
+	$(OBJDUMP) --syms $(subst .sym,.elf,$@) | grep ' g ' | grep 'text' |  awk '{ print  $$5,  $$1 }' > $*.sym
 
 
 # Default target. First cleanup from last make, the build program, then copy for tftp transfer
-all: stuff.bin
+all: stuff.bin stuff.dmp stuff.sym
 
 
-# The >/dev/null 2>/dev/null || true prevents error messages if files don't exist
+# The '>/dev/null 2>/dev/null || true' prevents error messages if files don't exist
 clean:
-	rm *.elf *.bin *.lis *.o >/dev/null 2>/dev/null || true
+	rm *.elf *.bin *.lis *.o *.dmp *.sym >/dev/null 2>/dev/null || true
