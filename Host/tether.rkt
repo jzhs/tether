@@ -1,7 +1,7 @@
 #lang racket
 (provide Fetch Store Call
-         open-serial serial-ports
-         rx-byte tx-byte flush close (struct-out io-port)
+         open-serial close-serial serial-ports
+         rx-byte tx-byte flush (struct-out io-port)
          current-serial-port)
 
 (require libserialport)
@@ -15,7 +15,7 @@
   (let-values ([(in out) (open-serial-port dev #:baudrate baud)])
     (current-serial-port (io-port in out))))
 
-(define (close)
+(define (close-serial)
   (close-input-port (io-port-in (current-serial-port)))
   (close-output-port (io-port-out (current-serial-port))))
 
@@ -29,7 +29,7 @@
   (read-byte (io-port-in (current-serial-port))))
 
 (define (to-bytes n #:byte-order end)
-  
+   
   (define (to-bytes/acc n cnt acc)
     (if (= cnt 0)
         (if (eq? end 'big)
@@ -59,5 +59,6 @@
   (for ([b (to-bytes adr #:byte-order 'big)])
     (tx-byte b))
   (flush)
+  ; calculate return value
   (+ (* (rx-byte) (expt 256 3)) (* (rx-byte) (expt 256 2)) (* (rx-byte) (expt 256 1)) (rx-byte)))
 
