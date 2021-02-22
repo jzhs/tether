@@ -1,5 +1,5 @@
 
-TFTPDIR = ~/tftpboot
+TFTPDIR = /tftpboot
 TOOLSDIR = ~/aarch64-elf-bin
 
 PREFIX = $(TOOLSDIR)/aarch64-elf-

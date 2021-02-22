@@ -1,0 +1,33 @@
+
+ 
+Board: HiLetgo ESP-WROOM-32 ESP32 ESP-32S Development Board
+
+SoC  : Espressif ESP32D0WDQ6 (revision 1)
+
+Processor: Tensilica Xtensa LX6
+
+Ram, Flash, ... ??
+
+* I decided to use the Arduino IDE. 
+
+** In File, Preferences
+Add to 'Additional Boards Managers URL':
+https://dl.espressif.com/dl/package_esp32_index.json
+
+** Select Tools, Board ESP32 Dev Module
+
+** Select Port and Baud (115200)
+
+** Click Upload, wait for Connecting.....
+
+** Press IO0 button 
+Button on the right when cable points down (ie Not the button labeled
+EN) 
+
+The code is flashed.
+
+
+
+* Note: Required pressing a button on the board is annoying
+
+* Was able to get working immediately

@@ -1,13 +1,15 @@
 
+	.global start
 	.text
 	lr .req x30
 
+	
 start:	
 	adr x0, start
 	mov sp, x0
 	bl mu_init
 
-	
+
 loop:
 	bl mu_rx
 

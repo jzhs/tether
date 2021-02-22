@@ -5,3 +5,8 @@
 *.lis
 *.map
 *.out
+*.pyc
+*.dep
+*.zo
+*.o
+*.hex

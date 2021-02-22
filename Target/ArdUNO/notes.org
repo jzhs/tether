@@ -1,0 +1,17 @@
+
+- installed binutils-avr
+     In asm file added some equ's from m328Pdef.inc (b/c that file is
+     incompatible with gnu gas.)
+
+     avr-as -a -W -mmcu=atmega328p -o uart.o uart.S
+     avr-ld uart.o
+     avr-objcopy -O ihex a.out uart.hex
+
+- installed avr-dude
+
+     avrdude -p ATmega328P -c avrisp2 -P usb -U flash:w:uart.hex
+
+
+- uses ttyACM0
+
+

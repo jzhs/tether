@@ -34,21 +34,19 @@ mu_init:
 	// adjust the baud rate
 	ldr x1, =MINI_UART.BASE
 	mov w0, 0x10e
-	strh w0, [x1, BAUD_REG]
+	str w0, [x1, BAUD_REG]
 	ret
-	
-
 
 	// Transmit byte
 	// w0 is the byte to write
 mu_tx:	ldr x1, =MINI_UART.BASE
 
 	// wait for Tx fifo to be not full 
-1:	ldrb w2, [x1, LSR_REG]
+1:	ldr w2, [x1, LSR_REG]
 	tbz  w2, TX_FIFO_E, 1b
 
 	// output the byte
-	strb w0, [x1, THR_REG]
+	str w0, [x1, THR_REG]
 	ret
 	
 	// Receive byte
@@ -56,19 +54,18 @@ mu_tx:	ldr x1, =MINI_UART.BASE
 mu_rx:	ldr x1, =MINI_UART.BASE
 
 	// Wait for Rx fifo to be not empty
-1:	ldrb w2, [x1, LSR_REG]
-	tbz  w2, RX_FIFO_E, 1b
+1:	ldr w2, [x1, LSR_REG]
+	tbz w2, RX_FIFO_E, 1b
 
 	// Read the byte into w0
-	ldrb w0, [x1, RHR_REG]
-	
+	ldr w0, [x1, RHR_REG]
 	ret
 
 mu_flush:
 	ldr x1, =MINI_UART.BASE
 	// wait for Tx to finish up
-1:	ldrb w2, [x1, LSR_REG]
-	tbz  w2, TX_IDLE, 1b
+1:	ldr w2, [x1, LSR_REG]
+	tbz w2, TX_IDLE, 1b
 	ret
 
 	
