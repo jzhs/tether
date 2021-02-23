@@ -10,7 +10,6 @@
 
 (struct io-port (in out))
 
-
 (define (open-serial dev baud)
   (let-values ([(in out) (open-serial-port dev #:baudrate baud)])
     (current-serial-port (io-port in out))))
@@ -28,15 +27,13 @@
 (define (rx-byte)
   (read-byte (io-port-in (current-serial-port))))
 
-(define (to-bytes n #:byte-order end)
-   
+(define (to-bytes n #:byte-order end)  
   (define (to-bytes/acc n cnt acc)
     (if (= cnt 0)
         (if (eq? end 'big)
             acc
             (reverse acc))
         (to-bytes/acc (quotient n 256) (sub1 cnt) (cons (remainder n 256) acc))) )
-  
   (to-bytes/acc n 4 '()))
 
 (define (Fetch adr)
@@ -45,7 +42,6 @@
     (tx-byte b))
   (flush)
   (rx-byte) )
-
 
 (define (Store adr val)
   (tx-byte #x02)
