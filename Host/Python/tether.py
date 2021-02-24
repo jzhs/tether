@@ -23,4 +23,3 @@ def Call(addr):
     byts = adr.to_bytes(4, 'big')
     ser.write(byts)
     ser.flush()
-

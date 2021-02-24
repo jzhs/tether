@@ -24,7 +24,7 @@ objects = interp.o uart.o
 
 
 # Default target. First cleanup from last make, the build program, then copy for tftp transfer
-all: clean kernel8.bin cpy2tftp
+all: kernel8.bin cpy2tftp
 
 cpy2tftp:
 	cp kernel8.bin $(TFTPDIR)/kernel8.img
